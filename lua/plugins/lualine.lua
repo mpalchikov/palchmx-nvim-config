@@ -12,7 +12,7 @@ local function get_root_name()
 
     -- 3. Use fnamemodify with the :t modifier to get the tail (last path component)
     local root_name = vim.fn.fnamemodify(cleaned_path, ':t')
-    
+
     return root_name
   end
 
@@ -40,6 +40,21 @@ end
 local function get_global_warnings()
   local count = #vim.diagnostic.get(nil, { severity = vim.diagnostic.severity.WARN })
   return count > 0 and ("W" .. count) or ""
+end
+
+local function get_uncommitted_indicator()
+  if not (vim.fn.isdirectory('.git') or vim.fn.filereadable('.git')) then return "" end
+  local result = vim.fn.system("git status --porcelain 2>/dev/null")
+  if vim.v.shell_error ~= 0 or result == "" then return "" end
+  return "[+]"
+end
+
+local function get_unpushed_indicator()
+  if not (vim.fn.isdirectory('.git') or vim.fn.filereadable('.git')) then return "" end
+  local result = vim.fn.system("git rev-list --count @{upstream}..HEAD 2>/dev/null")
+  if vim.v.shell_error ~= 0 then return "" end
+  local count = tonumber(vim.trim(result)) or 0
+  return count > 0 and "[↑]" or ""
 end
 
 return {
@@ -75,15 +90,20 @@ return {
               lualine_x = { "diff" },
               lualine_y = {}
           },
-          tabline = {
-              lualine_a = { get_root_name },
-              lualine_b = { "branch" },
-              lualine_c = 
-              {
-                  { get_modified_buffers_count, color = { fg = '#ffffff' }, separator = "" },
-                  { get_global_errors, color = { fg = '#ff0000' }, separator = "" },
-                  { get_global_warnings, color = { fg = '#ff9e64' } }
-              },
+            tabline = {
+                lualine_a = { get_root_name },
+                lualine_b = 
+                {
+                    { "branch", separator = "" },
+                    { get_uncommitted_indicator, separator = "" },
+                    { get_unpushed_indicator }
+                },
+                lualine_c =
+                {
+                   { get_modified_buffers_count, color = { fg = '#ffffff' }, separator = "" },
+                   { get_global_errors, color = { fg = '#ff0000' }, separator = "" },
+                   { get_global_warnings, color = { fg = '#ff9e64' } }
+                },
               lualine_x = {},
               lualine_y = {},
               lualine_z = {}
