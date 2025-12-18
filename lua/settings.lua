@@ -1,0 +1,62 @@
+-- Other basic Neovim settings.
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.expandtab = true
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
+vim.o.showmode = false
+vim.opt.smarttab = true
+vim.opt.smartindent = true
+vim.opt.autoindent = true
+vim.opt.breakindent = true
+vim.opt.cursorline = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.signcolumn = "yes"
+vim.opt.splitright = true
+vim.opt.splitbelow = true
+vim.o.list = true
+vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.o.inccommand = "split"
+vim.o.scrolloff = 10
+
+vim.keymap.set('n', '<Space>', '<Nop>', { silent = true, remap = false })
+
+vim.keymap.set('n', '<ESC>', ':nohlsearch<CR>', { noremap = true, silent = true })
+
+vim.keymap.set("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory" })
+
+vim.keymap.set('n', '<leader>vgd', function()
+  vim.cmd('vertical split | lua vim.lsp.buf.definition()')
+end, { desc = 'Vertical split go to definition' })
+
+vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition)
+vim.keymap.set("n", "<leader>gt", vim.lsp.buf.type_definition)
+
+vim.lsp.config['luals'] = {
+  -- Command and arguments to start the server.
+  cmd = { 'lua-language-server' },
+  -- Filetypes to automatically attach to.
+  filetypes = { 'lua' },
+  -- Sets the "workspace" to the directory where any of these files is found.
+  -- Files that share a root directory will reuse the LSP server connection.
+  -- Nested lists indicate equal priority, see |vim.lsp.Config|.
+  root_markers = { { '.luarc.json', '.luarc.jsonc' }, '.git' },
+  -- Specific settings to send to the server. The schema is server-defined.
+  -- Example: https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json
+  settings = {
+    Lua = {
+      runtime = {
+        version = 'LuaJIT',
+      }
+    }
+  },
+}
+
+vim.lsp.enable("luals")
+
+vim.lsp.config["roslyn"] = {}
+vim.lsp.enable("roslyn")
