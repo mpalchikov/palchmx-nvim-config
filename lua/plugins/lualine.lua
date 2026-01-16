@@ -62,6 +62,11 @@ return {
   dependencies = { 'nvim-tree/nvim-web-devicons' },
   config = function()
       require("lualine").setup({
+          options = {
+              refresh = {
+                  tabline = 10000,
+              }
+          },
           sections = {
               lualine_a = {
                   { 

@@ -4,7 +4,7 @@ return {
   config = function()
       require("nvim-treesitter.configs").setup({
           -- A list of parser names to install.
-          ensure_installed = { "c_sharp", "markdown", "lua", "json", "yaml", "proto" },
+          ensure_installed = { "c_sharp", "markdown", "lua", "json", "yaml", "proto", "razor" },
 
           -- Install parsers synchronously (recommended).
           sync_install = false,

@@ -60,7 +60,6 @@ vim.lsp.config['luals'] = {
 
 vim.lsp.enable("luals")
 
-vim.lsp.config["roslyn"] = {}
 vim.lsp.enable("roslyn")
 
 vim.lsp.config['jsonls'] = {
