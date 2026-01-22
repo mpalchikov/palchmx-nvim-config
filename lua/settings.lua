@@ -23,6 +23,13 @@ vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 vim.o.inccommand = "split"
 vim.o.scrolloff = 10
 
+-- Force undercurl support for Windows Terminal
+vim.g.t_Cs = "\27[4:3m"
+vim.g.t_Ce = "\27[4:0m"
+
+-- Ensure termguicolors is on (required for curls)
+vim.opt.termguicolors = true
+
 vim.keymap.set('n', '<Space>', '<Nop>', { silent = true, remap = false })
 
 vim.keymap.set('n', '<ESC>', ':nohlsearch<CR>', { noremap = true, silent = true })
