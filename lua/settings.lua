@@ -1,4 +1,3 @@
--- Other basic Neovim settings.
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.expandtab = true
@@ -22,6 +21,8 @@ vim.o.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 vim.o.inccommand = "split"
 vim.o.scrolloff = 10
+vim.opt.fixeol = false
+vim.opt.eol = false
 
 -- Force undercurl support for Windows Terminal
 vim.g.t_Cs = "\27[4:3m"

@@ -1,22 +1,74 @@
+local git_cache = {
+  uncommitted = "",
+  unpushed = "",
+  last_update = 0,
+  refresh_interval = 5,
+  is_updating = false
+}
+
+local function update_git_cache()
+  local current_time = vim.loop.now() / 1000
+
+  if (current_time - git_cache.last_update) < git_cache.refresh_interval or git_cache.is_updating then
+    return
+  end
+
+  if not (vim.fn.isdirectory('.git') == 1 or vim.fn.filereadable('.git') == 1) then
+    git_cache.uncommitted = ""
+    git_cache.unpushed = ""
+    git_cache.last_update = current_time
+    return
+  end
+
+  git_cache.is_updating = true
+
+  vim.fn.jobstart("git status --porcelain 2>/dev/null", {
+    cwd = vim.fn.getcwd(),
+    stdout_buffered = true,
+    on_stdout = function(_, data)
+      if data then
+        local result = table.concat(data, "\n")
+        git_cache.uncommitted = (result ~= "" and result ~= "\n") and "[+]" or ""
+      end
+    end,
+    on_exit = function(_, exit_code)
+      if exit_code ~= 0 then
+        git_cache.uncommitted = ""
+      end
+
+      vim.fn.jobstart("git rev-list --count @{upstream}..HEAD 2>/dev/null", {
+        cwd = vim.fn.getcwd(),
+        stdout_buffered = true,
+        on_stdout = function(_, data)
+          if data then
+            local result = vim.trim(table.concat(data, "\n"))
+            local count = tonumber(result) or 0
+            git_cache.unpushed = count > 0 and "[↑]" or ""
+          end
+        end,
+        on_exit = function(_, exit_code)
+          if exit_code ~= 0 then
+            git_cache.unpushed = ""
+          end
+          git_cache.last_update = vim.loop.now() / 1000
+          git_cache.is_updating = false
+        end
+      })
+    end
+  })
+end
+
 local function get_root_name()
-  -- Define project markers
   local project_markers = { '.git' }
 
-  -- 1. Get the full root path
   local root_path = vim.fs.root(0, project_markers)
 
   if root_path then
-    -- 2. Remove any trailing slash to ensure :t works correctly
-    --    (e.g., changes "/home/user/project/" to "/home/user/project")
     local cleaned_path = root_path:gsub('/$', '')
-
-    -- 3. Use fnamemodify with the :t modifier to get the tail (last path component)
     local root_name = vim.fn.fnamemodify(cleaned_path, ':t')
-
     return root_name
   end
 
-  -- Fallback if no root is found
   return "No Project"
 end
 
@@ -43,18 +95,19 @@ local function get_global_warnings()
 end
 
 local function get_uncommitted_indicator()
-  if not (vim.fn.isdirectory('.git') or vim.fn.filereadable('.git')) then return "" end
-  local result = vim.fn.system("git status --porcelain 2>/dev/null")
-  if vim.v.shell_error ~= 0 or result == "" then return "" end
-  return "[+]"
+  if not (vim.fn.isdirectory('.git') == 1 or vim.fn.filereadable('.git') == 1) then 
+    return ""
+  end
+  update_git_cache()
+  return git_cache.uncommitted
 end
 
 local function get_unpushed_indicator()
-  if not (vim.fn.isdirectory('.git') or vim.fn.filereadable('.git')) then return "" end
-  local result = vim.fn.system("git rev-list --count @{upstream}..HEAD 2>/dev/null")
-  if vim.v.shell_error ~= 0 then return "" end
-  local count = tonumber(vim.trim(result)) or 0
-  return count > 0 and "[↑]" or ""
+  if not (vim.fn.isdirectory('.git') == 1 or vim.fn.filereadable('.git') == 1) then 
+    return ""
+  end
+  update_git_cache()
+  return git_cache.unpushed
 end
 
 return {
@@ -114,5 +167,19 @@ return {
               lualine_z = {}
           },
       })
+      
+      -- Invalidate cache on buffer write
+      vim.api.nvim_create_autocmd("BufWritePost", {
+        callback = function()
+          -- Force cache refresh on next call
+          git_cache.last_update = 0
+        end
+      })
+      
+      -- Initial cache population
+      vim.schedule(function()
+        git_cache.last_update = 0
+        update_git_cache()
+      end)
   end
 }
