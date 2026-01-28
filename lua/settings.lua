@@ -24,17 +24,10 @@ vim.o.scrolloff = 10
 vim.opt.fixeol = false
 vim.opt.eol = false
 
--- Force undercurl support for Windows Terminal
-vim.g.t_Cs = "\27[4:3m"
-vim.g.t_Ce = "\27[4:0m"
-
--- Ensure termguicolors is on (required for curls)
 vim.opt.termguicolors = true
 
 vim.keymap.set('n', '<Space>', '<Nop>', { silent = true, remap = false })
-
 vim.keymap.set('n', '<ESC>', ':nohlsearch<CR>', { noremap = true, silent = true })
-
 vim.keymap.set("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory" })
 
 vim.keymap.set('n', '<leader>vgd', function()
@@ -43,7 +36,6 @@ end, { desc = 'Vertical split go to definition' })
 
 vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition)
 vim.keymap.set("n", "<leader>gt", vim.lsp.buf.type_definition)
-
 vim.keymap.set('n', '<leader>fj', ':%!jq .<CR>', { desc = 'Format JSON with jq' })
 
 vim.lsp.config['luals'] = {
