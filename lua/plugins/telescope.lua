@@ -3,6 +3,8 @@ return {
   dependencies = { 'nvim-lua/plenary.nvim' },
   config = function()
     local actions = require("telescope.actions")
+    local previewers = require("telescope.previewers")
+    
     require('telescope').setup{
       pickers = {
           buffers = {
@@ -11,6 +13,16 @@ return {
                       ["<C-d>"] = actions.delete_buffer,
                   },
               },
+          },
+          git_status = {
+              previewer = previewers.new_termopen_previewer({
+                  get_command = function(entry)
+                      if entry.status == "??" then
+                          return { 'cat', entry.value }
+                      end
+                      return { 'sh', '-c', 'git diff --color=always -- ' .. vim.fn.shellescape(entry.value) .. ' | delta' }
+                  end
+              })
           },
       },
       defaults = {
@@ -35,5 +47,6 @@ return {
     vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
     vim.keymap.set('n', '<leader>gr', builtin.lsp_references, { desc = 'Telescope LSP references' })
     vim.keymap.set('n', '<leader>xd', builtin.diagnostics, { desc = "Telescope Diagnostics"})
+    vim.keymap.set('n', '<leader>fu', builtin.git_status, { desc = 'Telescope git status (uncommitted files)' })
   end
 }
