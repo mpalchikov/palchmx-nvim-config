@@ -4,7 +4,7 @@ return {
   config = function()
     local actions = require("telescope.actions")
     local previewers = require("telescope.previewers")
-    
+
     require('telescope').setup{
       pickers = {
           buffers = {
@@ -13,16 +13,6 @@ return {
                       ["<C-d>"] = actions.delete_buffer,
                   },
               },
-          },
-          git_status = {
-              previewer = previewers.new_termopen_previewer({
-                  get_command = function(entry)
-                      if entry.status == "??" then
-                          return { 'cat', entry.value }
-                      end
-                      return { 'sh', '-c', 'git diff --color=always -- ' .. vim.fn.shellescape(entry.value) .. ' | delta' }
-                  end
-              })
           },
       },
       defaults = {
