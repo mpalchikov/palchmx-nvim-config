@@ -5,6 +5,6 @@ return {
       transparent = false,
       keywordStyle = { italic = false }
     })
-    vim.cmd("colorscheme kanagawa")
+    vim.cmd("colorscheme kanagawa-dragon")
   end
 }

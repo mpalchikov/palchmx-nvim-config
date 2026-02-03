@@ -19,12 +19,14 @@ return {
           layout_strategy = "vertical",
           results_title = false,
           layout_config = {
-              width = 0.85,
+              width = 0.95,
+              height = 0.95,
               vertical = {
                   prompt_position = "bottom",
                   mirror = false,
                   preview_height = 0.70
-              }
+              },
+              preview_cutoff = 0,
           },
           path_display = { "smart" }, -- or "truncate", "filename", or a custom function
       },

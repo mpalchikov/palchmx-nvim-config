@@ -38,6 +38,8 @@ vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition)
 vim.keymap.set("n", "<leader>gt", vim.lsp.buf.type_definition)
 vim.keymap.set('n', '<leader>fj', ':%!jq .<CR>', { desc = 'Format JSON with jq' })
 
+vim.keymap.set("n", "<leader>qc", "<CMD>cclose<CR>", { desc = "Close quick pane" })
+
 vim.lsp.config['luals'] = {
   -- Command and arguments to start the server.
   cmd = { 'lua-language-server' },
