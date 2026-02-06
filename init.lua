@@ -60,13 +60,3 @@ require("lazy").setup({
     require("plugins.mini_cursorword"),
     require("plugins.treesitter_context"),
 })
-
-vim.diagnostic.config({
-    float = {
-        border = "single", -- Options: "single", "double", "rounded", "solid", "shadow"
-        focusable = false,
-        style = "minimal",
-        header = "",
-        prefix = "",
-    },
-})

@@ -41,6 +41,8 @@ vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action)
 
 vim.keymap.set("n", "<leader>qc", "<CMD>cclose<CR>", { desc = "Close quick pane" })
 
+vim.o.winborder = "single";
+
 vim.lsp.config["luals"] = {
     -- Command and arguments to start the server.
     cmd = { "lua-language-server" },
