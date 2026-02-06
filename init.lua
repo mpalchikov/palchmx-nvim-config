@@ -7,7 +7,7 @@ if not vim.loop.fs_stat(lazypath) then
         "--filter=blob:none",
         "https://github.com/folke/lazy.nvim.git",
         "--branch=stable", -- latest stable release
-          opts = {},
+        opts = {},
         lazypath,
     })
 end
@@ -15,10 +15,10 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 vim.filetype.add({
-  extension = {
-    razor = "razor",
-    cshtml = "razor",
-  },
+    extension = {
+        razor = "razor",
+        cshtml = "razor",
+    },
 })
 
 if vim.fn.has("wsl") == 1 then
@@ -42,21 +42,31 @@ vim.opt.clipboard = "unnamedplus"
 require("settings")
 
 require("lazy").setup({
-  require("plugins.treesitter"),
-  require("plugins.virt_column"),
-  require("plugins.kanagawa"),
-  require("plugins.dadbod"),
-  require("plugins.mason"),
-  require("plugins.roslyn"),
-  require("plugins.telescope"),
-  require("plugins.blink_cmp"),
-  require("plugins.oil"),
-  require("plugins.gitsigns"),
-  require("plugins.lualine"),
-  require("plugins.quicker"),
-  require("plugins.mini_indentscope"),
-  require("plugins.mini_move"),
-  require("plugins.mini_splitjoin"),
-  require("plugins.mini_cursorword"),
-  require("plugins.treesitter_context"),
+    require("plugins.treesitter"),
+    require("plugins.virt_column"),
+    require("plugins.kanagawa"),
+    require("plugins.dadbod"),
+    require("plugins.mason"),
+    require("plugins.roslyn"),
+    require("plugins.telescope"),
+    require("plugins.blink_cmp"),
+    require("plugins.oil"),
+    require("plugins.gitsigns"),
+    require("plugins.lualine"),
+    require("plugins.quicker"),
+    require("plugins.mini_indentscope"),
+    require("plugins.mini_move"),
+    require("plugins.mini_splitjoin"),
+    require("plugins.mini_cursorword"),
+    require("plugins.treesitter_context"),
+})
+
+vim.diagnostic.config({
+    float = {
+        border = "single", -- Options: "single", "double", "rounded", "solid", "shadow"
+        focusable = false,
+        style = "minimal",
+        header = "",
+        prefix = "",
+    },
 })

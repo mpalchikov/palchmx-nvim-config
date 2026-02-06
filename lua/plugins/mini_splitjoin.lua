@@ -3,7 +3,7 @@ return {
     version = "*",
     config = function()
         require("mini.splitjoin").setup({
- 		separator = ", " 
- 	    })
+            separator = ", " 
+        })
     end
 }
