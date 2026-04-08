@@ -5,7 +5,7 @@ return {
     ft = { "cs", "razor" },
     lazy = false,
     config = function()
-        local rzls_path = vim.fn.expand("$MASON/packages/roslyn/libexec/.razorExtension")
+        local rzls_path = vim.fs.joinpath(vim.fn.stdpath("data"), "mason", "packages", "roslyn", "libexec", ".razorExtension")
 
         local cmd = {
             "roslyn",
@@ -20,6 +20,13 @@ return {
         vim.lsp.config["roslyn"] = {
             filetypes = { "cs", "razor" },
             cmd = cmd,
+            capabilities = {
+                workspace = {
+                    didChangeWatchedFiles = {
+                        dynamicRegistration = true,
+                    },
+                },
+            },
         }
     end,
     opts = {
