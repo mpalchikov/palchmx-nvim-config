@@ -65,8 +65,6 @@ vim.lsp.config["luals"] = {
 
 vim.lsp.enable("luals")
 
-vim.lsp.enable("roslyn")
-
 vim.lsp.config["jsonls"] = {
     cmd = { "vscode-json-language-server", "--stdio" },
     filetypes = { "json", "jsonc" },

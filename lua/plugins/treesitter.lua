@@ -1,21 +1,17 @@
 return {
     "nvim-treesitter/nvim-treesitter",
+    branch = "main",
     build = ":TSUpdate", -- Automatically installs parsers on first run.
     config = function()
-        require("nvim-treesitter.configs").setup({
-            -- A list of parser names to install.
-            ensure_installed = { "c_sharp", "markdown", "lua", "json", "yaml", "proto", "razor" },
+        local treesitter = require("nvim-treesitter")
 
-            -- Install parsers synchronously (recommended).
-            sync_install = false,
+        treesitter.setup({})
+        treesitter.install({ "c_sharp", "markdown", "lua", "json", "yaml", "proto", "razor" })
 
-            -- Autoinstall parsers for filetypes that are missing them.
-            auto_install = true,
-
-            highlight = {
-                enable = true, -- Enable syntax highlighting.
-                additional_vim_regex_highlighting = false,
-            },
+        vim.api.nvim_create_autocmd("FileType", {
+            callback = function(ev)
+                pcall(vim.treesitter.start, ev.buf)
+            end,
         })
     end,
 }
