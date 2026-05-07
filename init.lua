@@ -52,6 +52,7 @@ require("lazy").setup({
     require("plugins.blink_cmp"),
     require("plugins.oil"),
     require("plugins.gitsigns"),
+    require("plugins.diffview"),
     require("plugins.lualine"),
     require("plugins.quicker"),
     require("plugins.mini_indentscope"),
