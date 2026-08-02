@@ -6,7 +6,7 @@ return {
         local treesitter = require("nvim-treesitter")
 
         treesitter.setup({})
-        treesitter.install({ "c_sharp", "markdown", "lua", "json", "yaml", "proto", "razor" })
+        treesitter.install({ "c_sharp", "markdown", "lua", "json", "yaml", "proto", "razor", "http", "bash", "dockerfile", "xml", "typescript", "tsx" })
 
         vim.api.nvim_create_autocmd("FileType", {
             callback = function(ev)

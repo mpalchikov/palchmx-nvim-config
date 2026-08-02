@@ -23,34 +23,41 @@ return {
                 },
                 live_grep = {
                     layout_config = {
-                        preview_width = 0.5,
+                        horizontal = {
+                            preview_width = 0.5,
+                        },
                     },
                 },
                 find_files = {
                     layout_config = {
-                        preview_width = 0.7,
+                        horizontal = {
+                            preview_width = 0.7,
+                        },
                     }
                 },
                 lsp_document_symbols = {
                     symbol_width = 100,
                 },
                 lsp_references = {
-                    layout_strategy = "vertical",
+                    layout_strategy = "flex",
                     fname_width = 100,
                     show_line = true,
                     trim_text = true,
                 },
                 diagnostics = {
-                    layout_strategy = "vertical",
+                    layout_strategy = "flex",
                     previewer = false,
                 }
             },
             defaults = {
-                layout_strategy = "horizontal",
+                layout_strategy = "flex",
                 results_title = false,
                 layout_config = {
                     width = 0.95,
                     height = 0.95,
+                    flex = {
+                        flip_columns = 140,
+                    },
                     vertical = {
                         prompt_position = "bottom",
                         mirror = false,
@@ -79,9 +86,17 @@ return {
         vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "Telescope Diagnostics"})
         vim.keymap.set("n", "<leader>fu", function()
             builtin.git_status({
-                layout_strategy = "horizontal",
+                layout_strategy = "flex",
                 layout_config = {
-                    preview_width = 0.65,
+                    flex = {
+                        flip_columns = 140,
+                    },
+                    horizontal = {
+                        preview_width = 0.65,
+                    },
+                    vertical = {
+                        preview_height = 0.5,
+                    },
                 },
                 previewer = previewers.new_termopen_previewer({
                     title = "Git File Diff Preview (difft)",

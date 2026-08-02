@@ -18,6 +18,7 @@ vim.filetype.add({
     extension = {
         razor = "razor",
         cshtml = "razor",
+        csproj = "xml",
     },
 })
 
@@ -45,6 +46,8 @@ require("lazy").setup({
     require("plugins.treesitter"),
     require("plugins.virt_column"),
     require("plugins.kanagawa"),
+    -- require("plugins.no-clown-fiesta"),
+    -- require("plugins.zenbones"),
     require("plugins.dadbod"),
     require("plugins.mason"),
     require("plugins.roslyn"),
@@ -61,3 +64,5 @@ require("lazy").setup({
     require("plugins.mini_cursorword"),
     require("plugins.treesitter_context"),
 })
+
+-- vim.cmd[[colorscheme no-clown-fiesta]]
